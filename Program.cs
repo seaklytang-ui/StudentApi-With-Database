@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Data;
+using StudentApi.Interfaces;
+using StudentApi.Models;
+using StudentApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddControllers();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>(); // Dependancy Injection (DI) create object auto
 
 builder.Services.AddEndpointsApiExplorer();
 
