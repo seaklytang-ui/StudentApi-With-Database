@@ -4,6 +4,7 @@ using StudentApi.Interfaces;
 using StudentApi.Models;
 using StudentApi.Repositories;
 using StudentApi.Services;
+using StudentApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,8 @@ app.UseSwagger();
 
 app.UseSwaggerUI();
 
-app.UseAuthorization();
+//app.UseAuthorization();
+app.UseMiddleware<ExceptionMiddleware>();// exception error 500 Internal Server
 
 app.MapControllers();
 
