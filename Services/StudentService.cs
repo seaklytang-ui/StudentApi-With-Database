@@ -1,5 +1,6 @@
 ﻿using StudentApi.Models;
 using StudentApi.Interfaces;
+using StudentApi.DTOs;
 
 namespace StudentApi.Services
 {
@@ -10,9 +11,15 @@ namespace StudentApi.Services
         { 
             _Repository = repository; 
         }
-        public async Task<List<Student>> GetAllAsync()
+        public async Task<List<StudentDto>> GetAllAsync()
         {
-            return await _Repository.GetAllAsync();
+            var students = await _Repository.GetAllAsync();
+            return students.Select(s => new StudentDto
+            {
+                Name = s.Name,
+                Major = s.Major
+            }).ToList();
+        
         }
 
         public async Task AddAsync(Student student)

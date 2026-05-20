@@ -27,9 +27,9 @@ namespace StudentApi.Controllers
 
         // GET ALL
         [HttpGet]
-        public async Task<ActionResult<List<Student>>> GetStudents()
+        public async Task<ActionResult> GetStudents()
         {
-            return await _service.GetAllAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
         // POST
