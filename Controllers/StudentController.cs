@@ -4,9 +4,11 @@ using StudentApi.Data;
 using StudentApi.Interfaces;
 using StudentApi.Models;
 using StudentApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentApi.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
@@ -32,6 +34,7 @@ namespace StudentApi.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [Authorize] // use authorize
         // POST
         [HttpPost]
         public async Task<ActionResult> AddStudent(Student student)
