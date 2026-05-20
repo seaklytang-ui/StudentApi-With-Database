@@ -3,6 +3,7 @@ using StudentApi.Data;
 using StudentApi.Interfaces;
 using StudentApi.Models;
 using StudentApi.Repositories;
+using StudentApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>(); // Dependan
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IStudentService,StudentService>();
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
