@@ -13,6 +13,25 @@ namespace StudentApi.Repositories
             _context = context; 
         }
 
+        // get all data to page when data match
+        public async Task<List<Student>> GetPagedAsync(
+            int page,
+            int pageSize,
+            string? search)
+        {
+            var query = _context.Students.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(s =>
+                s.Name.Contains(search));
+            }
+
+            return await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
         // GET ALL
         public async Task<List<Student>> GetAllAsync()
         {

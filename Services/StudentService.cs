@@ -1,6 +1,7 @@
-﻿using StudentApi.Models;
-using StudentApi.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using StudentApi.DTOs;
+using StudentApi.Interfaces;
+using StudentApi.Models;
 
 namespace StudentApi.Services
 {
@@ -40,6 +41,17 @@ namespace StudentApi.Services
                 throw new Exception("Student not found");
             }
             await _Repository.DeleteAsync(student);
+        }
+
+        public async Task<List<StudentDto>> GetPagedAsync(int page, int pageSize, string? search)
+        {
+            var students = await _Repository
+                .GetPagedAsync(page, pageSize, search);
+            return students.Select(s => new StudentDto
+            {
+                Name = s.Name,
+                Major = s.Major
+            }).ToList();
         }
     }
 }

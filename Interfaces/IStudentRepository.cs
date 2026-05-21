@@ -9,5 +9,9 @@ namespace StudentApi.Interfaces
         Task<Student> GetByIdAsync(int id);
         Task<Student> PutAsync(Student student);
         Task DeleteAsync(Student student);
+        Task<List<Student>> GetPagedAsync(
+            int page,
+            int pageSize,
+            string? search);
     }
 }

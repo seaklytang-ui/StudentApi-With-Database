@@ -5,6 +5,7 @@ using StudentApi.Interfaces;
 using StudentApi.Models;
 using StudentApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace StudentApi.Controllers
 {
@@ -68,6 +69,20 @@ namespace StudentApi.Controllers
 
             return Ok("Deleted successfully");
         }
+
+        // get data to page
+        [HttpGet("paged")]
+        public async Task<ActionResult> GetPaged(
+            int page = 1,
+            int pageSize = 5,
+            string? search = "")
+        {
+            var result = await _service
+                .GetPagedAsync(page, pageSize, search);
+            return Ok(result);
+        }
+
+
 
         //// PUT
         //[HttpPut("{id}")]
