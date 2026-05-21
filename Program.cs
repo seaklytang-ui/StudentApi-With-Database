@@ -11,6 +11,7 @@ using System.Text;
 using FluentValidation; // condition insert data
 using FluentValidation.AspNetCore;
 using StudentApi.Validators;
+using Serilog;//Save error when process
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             builder.Configuration["jwt:Key"]))
             };
     });
+// auto  save when error pel process
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("logs/log.txt",
+        rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Host.UseSerilog();
+//
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>(); // Dependancy Injection (DI) create object auto
 
