@@ -19,4 +19,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Code\CShartpLearning\Lesson02\StudentApi\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\Code\CShartpLearning\Lesson02\StudentApi\.editorconfig" />
+  </ItemGroup>
+
 </Project>
