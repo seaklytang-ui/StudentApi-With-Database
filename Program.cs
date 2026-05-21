@@ -8,7 +8,9 @@ using StudentApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using FluentValidation; // condition insert data
+using FluentValidation.AspNetCore;
+using StudentApi.Validators;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +46,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IStudentService,StudentService>();
+
+// exception insert data
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
