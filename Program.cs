@@ -13,12 +13,13 @@ using FluentValidation.AspNetCore;
 using StudentApi.Validators;
 using Serilog;//Save error when process
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddControllers();
 
+//Upload file 
+builder.Services.AddScoped<IFileService, FileService>();
 
 //// code jwt
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,17 +63,26 @@ builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 
+
+
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
 var app = builder.Build();
+
 
 // Configure pipeline
 app.UseSwagger();
 
 app.UseSwaggerUI();
+
+
+//upload file head
+app.UseStaticFiles();
 
 //app.UseAuthorization();
 app.UseAuthentication(); // enable authentication

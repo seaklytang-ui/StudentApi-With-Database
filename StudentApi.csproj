@@ -27,4 +27,8 @@
     <None Include="D:\Code\CShartpLearning\Lesson02\StudentApi\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
 </Project>
