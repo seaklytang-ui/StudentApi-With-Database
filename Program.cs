@@ -55,6 +55,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IStudentService,StudentService>();
 
+// AuthToken
+builder.Services.AddScoped<IAuthService,AuthService>();
+
 // exception insert data
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
