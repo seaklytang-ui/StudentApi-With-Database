@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentApi.DTOs;
 using StudentApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentApi.Controllers
 {
@@ -30,6 +31,22 @@ namespace StudentApi.Controllers
                 var result = await _Service.RefreshTokenAsync(refreshToken);
                 return Ok(result);
             }
+
+
+        [Authorize]
+        [HttpGet("Test-auth")]
+        public IActionResult TestAuth()
+        {
+            return Ok(new
+            {
+                User = User.Identity?.Name,
+                Roles = User.Claims
+                    .Where(c => c.Type.Contains("role"))
+                    .Select(c => c.Value)
+            });
         }
+    }
+
+    
     
 }

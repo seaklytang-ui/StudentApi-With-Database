@@ -12,6 +12,7 @@ using FluentValidation; // condition insert data
 using FluentValidation.AspNetCore;
 using StudentApi.Validators;
 using Serilog;//Save error when process
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.AddControllers();
 //Upload file 
 builder.Services.AddScoped<IFileService, FileService>();
 
-//// code jwt
+//// code jwt // Add Auth to swagger
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -33,13 +34,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
 
-                ValidIssuer = builder.Configuration["jwt:Issuer"],
-                IssuerSigningKey =
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                IssuerSigningKey = 
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
-                            builder.Configuration["jwt:Key"]))
+                            builder.Configuration["Jwt:Key"]))
             };
     });
+
+builder.Services.AddAuthorization();// enable authorization
+
 // auto  save when error pel process
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt",
@@ -48,11 +52,45 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 //
 
+
+
 builder.Services.AddScoped<IStudentRepository, StudentRepository>(); // Dependancy Injection (DI) create object auto
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Student API"
+    });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddScoped<IStudentService,StudentService>();
 
@@ -84,8 +122,9 @@ app.UseSwaggerUI();
 //upload file head
 app.UseStaticFiles();
 
-//app.UseAuthorization();
 app.UseAuthentication(); // enable authentication
+app.UseAuthorization(); // enable authorization
+
 app.UseMiddleware<ExceptionMiddleware>();// exception error 500 Internal Server
 
 app.MapControllers();

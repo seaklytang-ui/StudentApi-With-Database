@@ -50,6 +50,8 @@ namespace StudentApi.Controllers
         }
 
         // DELETE
+        [Authorize(Roles ="Admin")] // only admin can delete
+        //[Authorize(Roles ="Admin,Manager")]// only admin and manager can delete
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStudent(int id)
         {
