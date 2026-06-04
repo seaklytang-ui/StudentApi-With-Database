@@ -138,3 +138,5 @@ app.UseMiddleware<ExceptionMiddleware>();// exception error 500 Internal Server
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { } // for test integration
