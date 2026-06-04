@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path="dotnet.yml" />
+  </Folder>
   <Project Path="../StudentApi.Tests/StudentApi.Tests.csproj" Id="acf4127a-569f-486e-aa90-1b91da266cf5" />
   <Project Path="StudentApi.csproj" />
 </Solution>
