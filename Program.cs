@@ -1,20 +1,28 @@
+using Asp.Versioning;
+using FluentValidation; // condition insert data
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;//Save error when process
 using StudentApi.Data;
 using StudentApi.Interfaces;
+using StudentApi.Middleware;
 using StudentApi.Models;
 using StudentApi.Repositories;
 using StudentApi.Services;
-using StudentApi.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using FluentValidation; // condition insert data
-using FluentValidation.AspNetCore;
 using StudentApi.Validators;
-using Serilog;//Save error when process
-using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+// version api
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
 
 // Add services
 builder.Services.AddControllers();

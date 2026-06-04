@@ -6,14 +6,16 @@ using StudentApi.Models;
 using StudentApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Asp.Versioning;
 
 namespace StudentApi.Controllers
 {
-    
     [ApiController]
-    [Route("api/[controller]")]
+    //[ApiVersion("1.0")]
+    [Route("api/v1/student")]
     public class StudentController : ControllerBase
     {
+        
         //private readonly AppDbContext _context;
 
         //public StudentController(AppDbContext context)
